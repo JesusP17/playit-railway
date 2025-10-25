@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "Iniciando Playit..."
-chmod +x playit
-./playit
+chmod +x Playit
+./Playit
