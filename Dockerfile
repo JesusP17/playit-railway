@@ -1,18 +1,18 @@
-# Imagen base con Java 21
+# Imagen base con Java 17
 FROM openjdk:21-jdk-slim
 
 # Crea el directorio de trabajo
 WORKDIR /app
 
-# Acepta el EULA de Minecraft
-RUN echo "eula=true" > eula.txt
-
 # Instala wget y descarga tu server.jar desde Dropbox
 RUN apt-get update && apt-get install -y wget && \
-    wget -O server.jar "https://www.dropbox.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq9gmj7d7a2a&dl=1"
+    wget -O server.jar "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=cgkdprbw"
+
+# Copia el archivo eula.txt al contenedor
+COPY eula.txt .
 
 # Expón el puerto del servidor
-EXPOSE 16378
+EXPOSE 25565
 
 # Comando para ejecutar el servidor
 CMD ["java", "-Xmx1G", "-Xms1G", "-jar", "server.jar", "nogui"]
