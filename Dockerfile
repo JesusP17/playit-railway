@@ -1,12 +1,15 @@
-# Imagen base con Java 17 (Railway soporta OpenJDK)
+# Imagen base con Java 17
 FROM openjdk:17-jdk-slim
 
-# Copiar todos los archivos del proyecto al contenedor
+# Crea un directorio de trabajo
 WORKDIR /app
-COPY . .
 
-# Puerto (opcional, si tu servidor usa uno fijo)
-EXPOSE 16378
+# Descarga tu servidor desde Google Drive (enlace directo)
+RUN apt-get update && apt-get install -y wget && \
+    wget -O server.jar "https://drive.google.com/uc?export=download&id=1rWoXS-HnkokwOjLZhiJWnQCt_n5L7Ajc"
 
-# Comando para arrancar el servidor
+# Expone el puerto del servidor (ajusta si tu server usa otro)
+EXPOSE 25565
+
+# Comando para iniciar el servidor
 CMD ["java", "-Xmx1G", "-Xms1G", "-jar", "server.jar", "nogui"]
