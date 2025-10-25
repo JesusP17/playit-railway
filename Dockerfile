@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y wget && \
     wget -O server.jar "https://www.dropbox.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&dl=1"
 
-COPY eula.txt.    
+COPY eula.txt .    
 
 # Expón el puerto del servidor
 EXPOSE 16378
