@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
@@ -30,7 +30,7 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     echo './playit --secret $PLAYIT_AUTH &' >> /app/start.sh && \
     echo 'sleep 10' >> /app/start.sh && \
     echo 'echo "Iniciando servidor 1.18.2..."' >> /app/start.sh && \
-    echo 'java -Xmx1G -Xms512M -jar /app/server.jar --nogui' >> /app/start.sh && \
+    echo 'java -Xmx640M -Xms384M -jar /app/server.jar --nogui' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Comando final
