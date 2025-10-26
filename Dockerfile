@@ -2,22 +2,21 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
-# Copiar archivos necesarios
-COPY eula.txt .
-COPY playit .
-COPY PLAYIT_AUTH .
+# Instala wget
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-# Descargar automáticamente PaperMC 1.21.1 si no existe
-RUN apt-get update && apt-get install -y curl && \
-    if [ ! -f server.jar ]; then \
-    echo "Descargando PaperMC 1.21.1..." && \
-    curl -o server.jar https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/130/downloads/paper-1.21.1-130.jar; \
-    fi
+# Descarga automáticamente Paper 1.21.1 (build 130 por ejemplo)
+RUN wget -O server.jar https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/130/downloads/paper-1.21.1-130.jar
 
-# Permisos
+# Acepta el EULA
+RUN echo "eula=true" > eula.txt
+
+# Descarga Playit
+RUN wget -O playit https://playit.gg/downloads/playit-linux-amd64
 RUN chmod +x playit
 
-# Ejecutar Playit + Minecraft Server
-CMD ./playit --secret "$PLAYIT_AUTH" & \
-    sleep 5 && \
-    java -Xmx2G -Xms1G -jar server.jar --nogui
+# Usa variable de entorno para el token Playit (sin archivo local)
+ENV PLAYIT_AUTH=""
+
+# Ejecuta playit y el servidor
+CMD ./playit --secret "$PLAYIT_AUTH" & java -Xms1G -Xmx2G -jar server.jar --nogui
