@@ -14,17 +14,19 @@ RUN echo "eula=true" > eula.txt
 # Descargar el cliente de Playit.gg
 RUN curl -L -o playit https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 && chmod +x playit
 
-# Variable de entorno para el token de Playit (la define Railway)
+# Variable de entorno para el token de Playit
 ENV PLAYIT_AUTH=${PLAYIT_AUTH}
 
-# Crear script de inicio
-RUN echo '#!/bin/bash\n\
-set -e\n\
-echo "Iniciando Playit..."\n\
-./playit --secret $PLAYIT_AUTH &\n\
-sleep 10\n\
-echo "Iniciando servidor de Minecraft..."\n\
-java -Xmx1G -Xms1G -jar /app/server.jar --nogui' > start.sh && chmod +x start.sh
+# Crear el script de inicio dentro de /app
+RUN bash -c 'echo "#!/bin/bash
+set -e
+cd /app
+echo Iniciando Playit...
+./playit --secret \$PLAYIT_AUTH &
+sleep 10
+echo Iniciando servidor de Minecraft...
+java -Xmx1G -Xms1G -jar /app/server.jar --nogui
+" > /app/start.sh && chmod +x /app/start.sh'
 
-# Comando final que ejecuta el script
-CMD ["bash", "./start.sh"]
+# Comando final
+CMD ["bash", "/app/start.sh"]
