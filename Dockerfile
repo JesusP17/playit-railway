@@ -18,15 +18,15 @@ RUN curl -L -o playit https://github.com/playit-cloud/playit-agent/releases/late
 ENV PLAYIT_AUTH=${PLAYIT_AUTH}
 
 # Crear el script de inicio dentro de /app
-RUN bash -c 'echo "#!/bin/bash
-set -e
-cd /app
-echo Iniciando Playit...
-./playit --secret \$PLAYIT_AUTH &
-sleep 10
-echo Iniciando servidor de Minecraft...
-java -Xmx1G -Xms1G -jar /app/server.jar --nogui
-" > /app/start.sh && chmod +x /app/start.sh'
+RUN echo '#!/bin/bash' > /app/start.sh && \
+    echo 'set -e' >> /app/start.sh && \
+    echo 'cd /app' >> /app/start.sh && \
+    echo 'echo "Iniciando Playit..."' >> /app/start.sh && \
+    echo './playit --secret $PLAYIT_AUTH &' >> /app/start.sh && \
+    echo 'sleep 10' >> /app/start.sh && \
+    echo 'echo "Iniciando servidor de Minecraft..."' >> /app/start.sh && \
+    echo 'java -Xmx1G -Xms1G -jar /app/server.jar --nogui' >> /app/start.sh && \
+    chmod +x /app/start.sh
 
 # Comando final
 CMD ["bash", "/app/start.sh"]
