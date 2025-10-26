@@ -6,7 +6,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Descargar el servidor desde Dropbox
-RUN curl -L "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=cgkdprbw" -o server.jar
+RUN curl -L -o server.jar https://api.papermc.io/v2/projects/paper/versions/1.20.1/builds/120/downloads/paper-1.20.1-120.jar 
 
 # Aceptar EULA automáticamente
 RUN echo "eula=true" > eula.txt && \
