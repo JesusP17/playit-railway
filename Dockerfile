@@ -9,7 +9,9 @@ RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 RUN curl -L "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=cgkdprbw" -o server.jar
 
 # Aceptar EULA automáticamente
-RUN echo "eula=true" > eula.txt
+RUN echo "eula=true" > eula.txt && \
+    echo "online-mode=false" > server.properties && \
+    echo "motd=Servidor Playit en Railway" >> server.properties
 
 # Descargar el cliente de Playit.gg
 RUN curl -L -o playit https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 && chmod +x playit
