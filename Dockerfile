@@ -27,7 +27,7 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     echo './playit --secret $PLAYIT_AUTH &' >> /app/start.sh && \
     echo 'sleep 10' >> /app/start.sh && \
     echo 'echo "Iniciando servidor Paper 1.18.2..."' >> /app/start.sh && \
-    echo 'java -Xmx768M -Xms512M -jar /app/server.jar --nogui' >> /app/start.sh && \
+    echo 'java -Xmx1536M -Xms1024M -jar /app/server.jar --nogui' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Comando final
