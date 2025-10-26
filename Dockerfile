@@ -1,25 +1,23 @@
-FROM openjdk:21-jdk-slim
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-# Instalar dependencias necesarias
-RUN apt-get update && apt-get install -y wget curl unzip && rm -rf /var/lib/apt/lists/*
-
-# Descargar automáticamente la última versión estable de Paper 1.21.1
-RUN wget -O server.jar https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/120/downloads/paper-1.21.1-120.jar
-
-# Copiar eula.txt (aceptar términos)
+# Copiar archivos necesarios
 COPY eula.txt .
+COPY playit .
+COPY PLAYIT_AUTH .
 
-# Instalar y preparar el cliente de Playit
-RUN wget -O playit https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64
+# Descargar automáticamente PaperMC 1.21.1 si no existe
+RUN apt-get update && apt-get install -y curl && \
+    if [ ! -f server.jar ]; then \
+    echo "Descargando PaperMC 1.21.1..." && \
+    curl -o server.jar https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/130/downloads/paper-1.21.1-130.jar; \
+    fi
+
+# Permisos
 RUN chmod +x playit
 
-# Exponer el puerto del servidor
-EXPOSE 25565
-
-# Ejecutar Playit + Minecraft Paper
+# Ejecutar Playit + Minecraft Server
 CMD ./playit --secret "$PLAYIT_AUTH" & \
     sleep 5 && \
-    ls -l && \
-    java -Xmx1G -Xms1G -jar /app/server.jar --nogui
+    java -Xmx2G -Xms1G -jar server.jar --nogui
