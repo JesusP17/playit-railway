@@ -21,5 +21,4 @@ RUN wget -O playit "https://github.com/playit-cloud/playit-agent/releases/latest
 EXPOSE 25565
 
 # Ejecuta Playit + Minecraft
-CMD ./playit --secret "$PLAYIT_AUTH" & \
-    java -Xmx1G -Xms1G -jar server.jar nogui
+CMD sh -c "./playit --secret \"$PLAYIT_AUTH\" & java -Xmx1G -Xms1G -jar server.jar nogui"
