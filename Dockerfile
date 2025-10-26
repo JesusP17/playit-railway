@@ -11,11 +11,11 @@ RUN curl -L -o server.jar https://api.papermc.io/v2/projects/paper/versions/1.21
 # Aceptar EULA automáticamente
 RUN echo "eula=true" > eula.txt
 
-# Descargar Playit
+# Descargar Playit y dar permisos
 RUN curl -L -o playit https://playit.gg/downloads/playit-linux-amd64 && chmod +x playit
 
-# Variable de entorno del token Playit (la configurás en Railway)
+# Variable de entorno del token Playit
 ENV PLAYIT_AUTH=""
 
-# Ejecutar Playit + servidor Paper
+# Comando de inicio
 CMD ./playit --secret "$PLAYIT_AUTH" & java -Xms1G -Xmx2G -jar server.jar --nogui
