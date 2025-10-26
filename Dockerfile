@@ -22,4 +22,4 @@ EXPOSE 25565
 CMD ./playit --secret "$PLAYIT_AUTH" & \
     sleep 5 && \
     ls -l && \
-    java -Xmx1G -Xms1G -jar /app/server.jar nogui
+    java -Xmx1G -Xms1G -jar /app/server.jar --nogui
