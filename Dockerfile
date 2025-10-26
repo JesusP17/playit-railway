@@ -2,6 +2,9 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
+# Instalar curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Descargar el servidor desde tu Dropbox
 RUN curl -L -o server.jar "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=cgkdprbw"
 
