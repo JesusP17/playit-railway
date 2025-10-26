@@ -2,29 +2,29 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
+# Instalar curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Descargar server.jar correctamente desde Dropbox (forzando nombre y sin redirecciones)
+# Descargar el server.jar desde Dropbox
 RUN curl -L "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=cgkdprbw" -o server.jar
 
-# Aceptar automáticamente la EULA de Minecraft
+# Aceptar la EULA automáticamente
 RUN echo "eula=true" > eula.txt
 
-# Descargar playit.gg
+# Descargar el cliente de Playit.gg
 RUN curl -L -o playit https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 && chmod +x playit
 
-# Crear script que lanza playit y el servidor
+# Variable de entorno para el token de Playit (Railway la pondrá)
+ENV PLAYIT_AUTH=${PLAYIT_AUTH}
+
+# Crear el script de inicio
 RUN echo '#!/bin/bash\n\
 set -e\n\
 echo "Iniciando Playit..."\n\
-./playit &\n\
+./playit --secret $PLAYIT_AUTH &\n\
 sleep 10\n\
 echo "Iniciando servidor de Minecraft..."\n\
 java -Xmx1G -Xms1G -jar /app/server.jar --nogui' > start.sh && chmod +x start.sh
 
+# Comando final que ejecuta el script
 CMD ["./start.sh"]
-# Variable de entorno para el token de Playit
-ENV PLAYIT_AUTH=${PLAYIT_AUTH}
-
-# Ejecutar Playit y luego el servidor de Minecraft
-CMD ./playit & java -Xms1G -Xmx1G -jar server.jar --nogui
