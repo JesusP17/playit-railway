@@ -13,7 +13,7 @@ RUN wget -O server.jar "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2
 # Copia el archivo eula.txt al contenedor
 COPY eula.txt .
 
-# === Instala el agente de Playit ===
+# Instala el agente de Playit
 RUN wget -O playit "https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64" && \
     chmod +x playit
 
@@ -21,4 +21,4 @@ RUN wget -O playit "https://github.com/playit-cloud/playit-agent/releases/latest
 EXPOSE 25565
 
 # Ejecuta Playit + Minecraft
-CMD sh -c "./playit --secret \"$PLAYIT_AUTH\" & java -Xmx1G -Xms1G -jar server.jar nogui"
+CMD sh -c "./playit --secret \"$PLAYIT_AUTH\" & sleep 5 && java -Xmx1G -Xms1G -jar server.jar nogui"
