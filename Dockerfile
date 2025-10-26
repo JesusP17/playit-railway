@@ -34,7 +34,7 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     echo './playit --secret $PLAYIT_AUTH &' >> /app/start.sh && \
     echo 'sleep 10' >> /app/start.sh && \
     echo 'echo "Iniciando servidor Purpur 1.18.2..."' >> /app/start.sh && \
-    echo 'java -Xms256M -Xmx512M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=8M -jar /app/server.jar --nogui' >> /app/start.sh && \
+    echo 'java -Xms128M -Xmx512M -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=8M -jar /app/server.jar --nogui' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Comando final
