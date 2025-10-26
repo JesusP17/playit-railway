@@ -1,18 +1,21 @@
-FROM openjdk:21-jdk-slim
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
 # Instalar curl
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Descargar el servidor Paper 1.18.2 desde Dropbox
-RUN curl -L "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=d3cechfv" -o server.jar
+# Descargar el servidor desde Dropbox
+RUN curl -L "https://dl.dropboxusercontent.com/scl/fi/lylzn0ttgd756h2kpwaew/server.jar?rlkey=61knswbbpv8mpaq29qmj7d7a2&st=ldqdg2f5" -o server.jar
 
-# Aceptar EULA automáticamente
+# Aceptar EULA y configurar servidor
 RUN echo "eula=true" > eula.txt && \
     echo "online-mode=false" > server.properties && \
-    echo "motd=Servidor Playit en Railway" >> server.properties
-    
+    echo "motd=Servidor Playit en Railway (Paper/Purpur 1.18.2)" >> server.properties && \
+    echo "view-distance=6" >> server.properties && \
+    echo "max-tick-time=60000" >> server.properties && \
+    echo "max-players=10" >> server.properties
+
 # Descargar el cliente de Playit.gg
 RUN curl -L -o playit https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 && chmod +x playit
 
@@ -26,8 +29,8 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     echo 'echo "Iniciando Playit..."' >> /app/start.sh && \
     echo './playit --secret $PLAYIT_AUTH &' >> /app/start.sh && \
     echo 'sleep 10' >> /app/start.sh && \
-    echo 'echo "Iniciando servidor Paper 1.18.2..."' >> /app/start.sh && \
-    echo 'java -Xmx1536M -Xms1024M -jar /app/server.jar --nogui' >> /app/start.sh && \
+    echo 'echo "Iniciando servidor 1.18.2..."' >> /app/start.sh && \
+    echo 'java -Xmx1024M -Xms512M -jar /app/server.jar --nogui' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 # Comando final
